@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام دانش‌آموز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .register-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .register-btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .register-btn:hover {
+            background: #2980b9;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            color: #27ae60;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .password-toggle:hover {
+            color: #3498db;
+        }
+
+        .form-hint {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h2>🎓 ثبت‌نام دانش‌آموز</h2>
+            <p>لطفا اطلاعات خود را برای ایجاد حساب کاربری وارد کنید</p>
+        </div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="fullName">نام و نام خانوادگی:</label>
+                <input type="text" id="fullName" required placeholder="مثال: محمد احمدی">
+            </div>
+            
+            <div class="form-group">
+                <label for="nationalCode">کد ملی:</label>
+                <input type="text" id="nationalCode" required placeholder="۱۰ رقم کد ملی" maxlength="10">
+                <div class="form-hint">کد ملی باید دقیقاً ۱۰ رقم باشد</div>
+                <div class="error-message" id="nationalCodeError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="grade">پایه تحصیلی:</label>
+                <select id="grade" required>
+                    <option value="">انتخاب کنید</option>
+                    <option value="7">هفتم</option>
+                    <option value="8">هشتم</option>
+                    <option value="9">نهم</option>
+                    <option value="10">دهم</option>
+                    <option value="11">یازدهم</option>
+                    <option value="12">دوازدهم</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">ایمیل (اختیاری):</label>
+                <input type="email" id="email" placeholder="example@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">رمز عبور:</label>
+                <input type="password" id="password" required placeholder="حداقل ۶ کاراکتر">
+                <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">تکرار رمز عبور:</label>
+                <input type="password" id="confirmPassword" required placeholder="رمز عبور را مجددا وارد کنید">
+                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                <div class="error-message" id="passwordMatch"></div>
+            </div>
+            
+            <button type="submit" class="register-btn">ثبت‌نام و ایجاد حساب</button>
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+        
+        <div class="login-link">
+            <p>حساب کاربری دارید؟ <a href="student-login.html">وارد شوید</a></p>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">🔙 بازگشت به صفحه اصلی</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // تابع برای نمایش/مخفی کردن رمز
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggleBtn = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggleBtn.textContent = '🔒';
+            } else {
+                input.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        // اعتبارسنجی کد ملی
+        document.getElementById('nationalCode').addEventListener('input', function() {
+            const nationalCode = this.value;
+            const errorElement = document.getElementById('nationalCodeError');
+            
+            // فقط اعداد مجاز
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            if (nationalCode.length === 0) {
+                errorElement.textContent = '';
+                this.classList.remove('input-error');
+                return;
+            }
+
+            if (nationalCode.length !== 10) {
+                errorElement.textContent = '❌ کد ملی باید ۱۰ رقم باشد';
+                this.classList.add('input-error');
+            } else {
+                errorElement.textContent = '✅ کد ملی معتبر';
+                errorElement.style.color = '#27ae60';
+                this.classList.remove('input-error');
+            }
+        });
+
+        // بررسی تطابق رمز عبور
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const matchElement = document.getElementById('passwordMatch');
+
+            if (confirmPassword.length === 0) {
+                matchElement.textContent = '';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                matchElement.textContent = '❌ رمزهای عبور مطابقت ندارند';
+            } else {
+                matchElement.textContent = '✅ رمزهای عبور مطابقت دارند';
+                matchElement.style.color = '#27ae60';
+            }
+        });
+
+        // ثبت‌نام
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentData = {
+                fullName: document.getElementById('fullName').value,
+                nationalCode: document.getElementById('nationalCode').value,
+                grade: document.getElementById('grade').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // اعتبارسنجی
+            if (studentData.password !== confirmPassword) {
+                errorMessage.textContent = '❌ رمزهای عبور مطابقت ندارند';
+                return;
+            }
+
+            if (studentData.password.length < 6) {
+                errorMessage.textContent = '❌ رمز عبور باید حداقل ۶ کاراکتر باشد';
+                return;
+            }
+
+            if (studentData.nationalCode.length !== 10) {
+                errorMessage.textContent = '❌ کد ملی باید ۱۰ رقم باشد';
+                return;
+            }
+
+            // بررسی تکراری نبودن کد ملی
+            const existingStudents = JSON.parse(localStorage.getItem('students')) || [];
+            const existingStudent = existingStudents.find(s => s.nationalCode === studentData.nationalCode);
+            
+            if (existingStudent) {
+                errorMessage.textContent = '❌ این کد ملی قبلا ثبت شده است';
+                return;
+            }
+
+            // ذخیره در localStorage
+            existingStudents.push(studentData);
+            localStorage.setItem('students', JSON.stringify(existingStudents));
+
+            // نمایش پیام موفقیت
+            errorMessage.textContent = '';
+            successMessage.textContent = '✅ ثبت‌نام با موفقیت انجام شد! در حال انتقال...';
+
+            // هدایت به صفحه لاگین بعد از ۲ ثانیه
+            setTimeout(() => {
+                window.location.href = 'student-login.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

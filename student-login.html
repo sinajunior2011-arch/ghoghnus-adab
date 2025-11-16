@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود دانش‌آموز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .login-btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .login-btn:hover {
+            background: #2980b9;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .password-toggle:hover {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>🎓 ورود دانش‌آموز</h2>
+            <p>لطفا اطلاعات حساب کاربری خود را وارد کنید</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="nationalCode">کد ملی:</label>
+                <input type="text" id="nationalCode" required placeholder="۱۰ رقم کد ملی" maxlength="10">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">رمز عبور:</label>
+                <input type="password" id="password" required placeholder="رمز عبور خود را وارد کنید">
+                <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+            </div>
+            
+            <button type="submit" class="login-btn">ورود به پنل</button>
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+        
+        <div class="register-link">
+            <p>حساب کاربری ندارید؟ <a href="student-register.html">ثبت‌نام کنید</a></p>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">🔙 بازگشت به صفحه اصلی</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // تابع برای نمایش/مخفی کردن رمز
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggleBtn = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggleBtn.textContent = '🔒';
+            } else {
+                input.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        // فقط اعداد برای کد ملی
+        document.getElementById('nationalCode').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nationalCode = document.getElementById('nationalCode').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // دریافت اطلاعات دانش‌آموزان از localStorage
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            
+            // پیدا کردن دانش‌آموز با کد ملی
+            const student = students.find(s => 
+                s.nationalCode === nationalCode && s.password === password
+            );
+            
+            if (student) {
+                // ذخیره اطلاعات دانش‌آموز جاری
+                localStorage.setItem('currentStudent', JSON.stringify(student));
+                errorMessage.textContent = '';
+                
+                // نمایش پیام موفقیت
+                errorMessage.style.color = '#27ae60';
+                errorMessage.textContent = '✅ ورود موفق! در حال انتقال...';
+                
+                // هدایت به پنل دانش‌آموز
+                setTimeout(() => {
+                    window.location.href = 'student-dashboard.html';
+                }, 1000);
+            } else {
+                errorMessage.style.color = '#e74c3c';
+                errorMessage.textContent = '❌ کد ملی یا رمز عبور اشتباه است';
+            }
+        });
+
+        // بررسی اگر کاربر قبلا لاگین کرده
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentStudent = localStorage.getItem('currentStudent');
+            if (currentStudent) {
+                window.location.href = 'student-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

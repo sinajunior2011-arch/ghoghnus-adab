@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ققنوس ادب - سامانه آموزشی فارسی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            text-align: center;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message {
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .user-type {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .user-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 320px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        }
+        
+        .user-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .user-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .user-card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .teacher-card {
+            border-top: 5px solid #e74c3c;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        }
+        
+        .student-card {
+            border-top: 5px solid #3498db;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        }
+        
+        .developer-card {
+            border-top: 5px solid #2ecc71;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            order: 3; /* انتقال به پایین */
+            margin-top: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .teacher-card .btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .developer-card .btn {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+            font-size: 14px;
+            padding: 10px 20px;
+        }
+
+        .system-info {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            min-width: 150px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .developer-credit {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* تب گزارش مشکل */
+        .report-section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .teacher-card {
+            animation-delay: 0.1s;
+        }
+
+        .student-card {
+            animation-delay: 0.2s;
+        }
+
+        .developer-card {
+            animation-delay: 0.3s;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .user-type {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .user-card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- هدر اصلی -->
+        <div class="header">
+            <h1>🦅 ققنوس ادب - سامانه آموزشی فارسی</h1>
+            <p>پلتفرم جامع آموزش زبان و ادبیات فارسی</p>
+            
+            <div class="welcome-message">
+                📚 سیستم مدیریت آموزشی پیشرفته برای معلمان و دانش‌آموزان
+            </div>
+        </div>
+        
+        <!-- کارت‌های کاربران -->
+        <div class="user-type">
+            <!-- معلم -->
+            <div class="user-card teacher-card" onclick="login('teacher')">
+                <span class="icon">👨‍🏫</span>
+                <h3>پنل معلم</h3>
+                <p>مدیریت آزمون‌ها، مشاهده نتایج و تحلیل پیشرفت دانش‌آموزان</p>
+                <button class="btn">ورود به پنل معلم</button>
+            </div>
+            
+            <!-- دانش‌آموز -->
+            <div class="user-card student-card" onclick="login('student')">
+                <span class="icon">🎓</span>
+                <h3>پنل دانش‌آموز</h3>
+                <p>شرکت در آزمون‌ها، بازی‌های آموزشی و پیگیری پیشرفت تحصیلی</p>
+                <button class="btn">ورود به پنل دانش‌آموز</button>
+            </div>
+            
+            <!-- توسعه‌دهنده (کوچک شده) -->
+            <div class="user-card developer-card" onclick="login('developer')">
+                <span class="icon">🔧</span>
+                <h3>ورود توسعه‌دهنده</h3>
+                <p>مدیریت فنی سیستم و پشتیبانی</p>
+                <button class="btn">ورود به پنل توسعه‌دهنده</button>
+            </div>
+        </div>
+
+        <!-- اطلاعات سیستم -->
+        <div class="system-info">
+            <h3>📊 آمار سیستم</h3>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="studentsCount">0</div>
+                    <div class="stat-label">دانش‌آموز</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="teachersCount">0</div>
+                    <div class="stat-label">معلم</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="examsCount">0</div>
+                    <div class="stat-label">آزمون</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="resultsCount">0</div>
+                    <div class="stat-label">نتایج</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تب گزارش مشکل -->
+        <div class="report-section">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">📬 گزارش مشکل یا پیشنهاد</h2>
+            <div class="report-form">
+                <div class="form-group">
+                    <label for="userType">نوع کاربر:</label>
+                    <select id="userType">
+                        <option value="student">دانش‌آموز</option>
+                        <option value="teacher">معلم</option>
+                        <option value="guest">میهمان</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reportCategory">دسته‌بندی:</label>
+                    <select id="reportCategory">
+                        <option value="bug">مشکل فنی</option>
+                        <option value="suggestion">پیشنهاد بهبود</option>
+                        <option value="content">مشکل در محتوا</option>
+                        <option value="ui">مشکل در رابط کاربری</option>
+                        <option value="other">سایر</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reportTitle">عنوان گزارش:</label>
+                    <input type="text" id="reportTitle" placeholder="عنوان مشکل یا پیشنهاد خود را بنویسید...">
+                </div>
+                <div class="form-group">
+                    <label for="reportDescription">شرح کامل:</label>
+                    <textarea id="reportDescription" placeholder="شرح کامل مشکل، پیشنهاد یا انتقاد خود را با جزئیات بنویسید..."></textarea>
+                </div>
+                <button class="submit-btn" onclick="submitMainReport()">📨 ارسال گزارش به تیم توسعه</button>
+                <div id="mainReportResult" style="margin-top: 20px; text-align: center;"></div>
+            </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <p>سامانه آموزشی ققنوس ادب | نسخه ۱.۰</p>
+            <p class="developer-credit">🛠️ توسعه داده شده توسط سینا جعفری</p>
+            <div class="footer-links">
+                <a href="help.html" class="footer-link">راهنما</a>
+                <a href="about.html" class="footer-link">درباره ما</a>
+                <a href="rules.html" class="footer-link">قوانین</a>
+                <a href="contact.html" class="footer-link">تماس با ما</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تابع برای ورود کاربران
+        function login(userType) {
+            localStorage.setItem('userType', userType);
+            
+            switch(userType) {
+                case 'teacher':
+                    const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+                    if (teachers.length > 0) {
+                        window.location.href = 'teacher-login.html';
+                    } else {
+                        window.location.href = 'teacher-register.html';
+                    }
+                    break;
+                    
+                case 'student':
+                    window.location.href = 'student-login.html';
+                    break;
+                    
+                case 'developer':
+                    const developer = JSON.parse(localStorage.getItem('developer'));
+                    if (developer && developer.isActive) {
+                        window.location.href = 'developer-login.html';
+                    } else {
+                        window.location.href = 'developer-register.html';
+                    }
+                    break;
+            }
+        }
+
+        // تابع برای بارگذاری آمار سیستم
+        function loadSystemStats() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            const exams = JSON.parse(localStorage.getItem('exams')) || [];
+            const results = JSON.parse(localStorage.getItem('examResults')) || [];
+
+            document.getElementById('studentsCount').textContent = students.length;
+            document.getElementById('teachersCount').textContent = teachers.length;
+            document.getElementById('examsCount').textContent = exams.length;
+            document.getElementById('resultsCount').textContent = results.length;
+        }
+
+        // تابع برای ایجاد داده‌های نمونه
+        function createSampleData() {
+            // دانش‌آموزان نمونه
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            if (students.length === 0) {
+                const sampleStudents = [
+                    {
+                        fullName: "محمد احمدی",
+                        nationalCode: "1111111111",
+                        grade: "10",
+                        email: "mohammad@example.com",
+                        password: "123456",
+                        registerDate: new Date().toLocaleDateString('fa-IR')
+                    }
+                ];
+                localStorage.setItem('students', JSON.stringify(sampleStudents));
+            }
+
+            // معلمان نمونه
+            const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            if (teachers.length === 0) {
+                const sampleTeachers = [
+                    {
+                        fullName: "استاد فارسی",
+                        nationalCode: "2222222222",
+                        subject: "فارسی",
+                        email: "farsi@school.com",
+                        phone: "09120000001",
+                        password: "123456",
+                        registerDate: new Date().toLocaleDateString('fa-IR')
+                    }
+                ];
+                localStorage.setItem('teachers', JSON.stringify(sampleTeachers));
+            }
+
+            // آزمون‌های نمونه
+            const exams = JSON.parse(localStorage.getItem('exams')) || [];
+            if (exams.length === 0) {
+                const sampleExam = {
+                    id: 'exam-' + Date.now(),
+                    title: 'آزمون فارسی درس اول',
+                    subject: 'فارسی',
+                    duration: 45,
+                    questions: [
+                        {
+                            id: 1,
+                            text: 'معنی کلمه "فروتن" چیست؟',
+                            options: ['متکبر', 'مغرور', 'متواضع', 'ثروتمند'],
+                            correctAnswer: 2
+                        }
+                    ],
+                    createdBy: '2222222222',
+                    createdAt: new Date().toISOString(),
+                    endTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    isActive: true
+                };
+                localStorage.setItem('exams', JSON.stringify([sampleExam]));
+            }
+        }
+
+        // ارسال گزارش از صفحه اصلی
+        function submitMainReport() {
+            const userType = document.getElementById('userType').value;
+            const category = document.getElementById('reportCategory').value;
+            const title = document.getElementById('reportTitle').value;
+            const description = document.getElementById('reportDescription').value;
+
+            if (!title || !description) {
+                alert('❌ لطفا عنوان و شرح گزارش را وارد کنید');
+                return;
+            }
+
+            // ذخیره گزارش در localStorage
+            const reports = JSON.parse(localStorage.getItem('systemReports')) || [];
+            const newReport = {
+                id: 'sys_report_' + Date.now(),
+                userType: userType,
+                category: category,
+                title: title,
+                description: description,
+                date: new Date().toLocaleString('fa-IR'),
+                status: 'new',
+                ip: 'unknown'
+            };
+
+            reports.push(newReport);
+            localStorage.setItem('systemReports', JSON.stringify(reports));
+
+            document.getElementById('mainReportResult').innerHTML = `
+                <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; border: 1px solid #c3e6cb;">
+                    ✅ گزارش شما با موفقیت ارسال شد.<br>
+                    <strong>توسعه‌دهنده: سینا جعفری</strong> به زودی آن را بررسی خواهد کرد.
+                </div>
+            `;
+
+            // پاک کردن فرم
+            document.getElementById('reportTitle').value = '';
+            document.getElementById('reportDescription').value = '';
+        }
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            createSampleData();
+            loadSystemStats();
+            
+            localStorage.removeItem('currentStudent');
+            localStorage.removeItem('currentTeacher');
+            localStorage.removeItem('currentDeveloper');
+            
+            console.log('🦅 ققنوس ادب - سیستم آماده است!');
+        });
+    </script>
+</body>
+</html>

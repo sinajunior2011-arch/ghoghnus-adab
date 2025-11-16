@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام معلم</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .register-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+        
+        .register-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .register-btn:hover {
+            background: #c0392b;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            color: #27ae60;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .password-toggle:hover {
+            color: #e74c3c;
+        }
+
+        .teacher-features {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .teacher-features h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .teacher-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .teacher-features li {
+            padding: 5px 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .teacher-features li:before {
+            content: "🎯 ";
+            color: #e74c3c;
+        }
+
+        .form-hint {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+
+        .limit-warning {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .teacher-counter {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .counter-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .reset-data-btn {
+            background: #e67e22;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .reset-data-btn:hover {
+            background: #d35400;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h2>👨‍🏫 ثبت‌نام معلم</h2>
+            <p>لطفا اطلاعات خود را برای ایجاد حساب معلمی وارد کنید</p>
+        </div>
+
+        <!-- شمارنده معلمان -->
+        <div class="teacher-counter" id="teacherCounter">
+            📊 تعداد معلمان ثبت‌نام شده: 
+            <span class="counter-number" id="currentTeacherCount">0</span> از ۲ نفر
+        </div>
+
+        <!-- هشدار محدودیت -->
+        <div class="limit-warning" id="limitWarning">
+            ⚠️ توجه: فقط ۲ نفر می‌توانند به عنوان معلم ثبت‌نام کنند
+        </div>
+
+        <!-- دکمه ریست داده‌ها (فقط برای توسعه) -->
+        <div style="text-align: center; margin-bottom: 15px;">
+            <button class="reset-data-btn" onclick="resetTeacherData()">
+                🔄 ریست داده‌های معلمان (فقط تست)
+            </button>
+        </div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="fullName">نام و نام خانوادگی:</label>
+                <input type="text" id="fullName" required placeholder="مثال: احمد محمدی">
+            </div>
+            
+            <div class="form-group">
+                <label for="nationalCode">کد ملی:</label>
+                <input type="text" id="nationalCode" required placeholder="۱۰ رقم کد ملی" maxlength="10">
+                <div class="form-hint">کد ملی باید دقیقاً ۱۰ رقم باشد</div>
+                <div class="error-message" id="nationalCodeError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="subject">درس تدریس:</label>
+                <select id="subject" required>
+                    <option value="">انتخاب کنید</option>
+                    <option value="فارسی">زبان و ادبیات فارسی</option>
+                    <option value="ریاضی">ریاضی</option>
+                    <option value="علوم">علوم تجربی</option>
+                    <option value="انگلیسی">زبان انگلیسی</option>
+                    <option value="اجتماعی">مطالعات اجتماعی</option>
+                    <option value="دینی">هدیه های آسمانی</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">ایمیل:</label>
+                <input type="email" id="email" required placeholder="example@school.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">شماره تماس:</label>
+                <input type="tel" id="phone" placeholder="0912XXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label for="password">رمز عبور:</label>
+                <input type="password" id="password" required placeholder="حداقل ۶ کاراکتر">
+                <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">تکرار رمز عبور:</label>
+                <input type="password" id="confirmPassword" required placeholder="رمز عبور را مجددا وارد کنید">
+                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                <div class="error-message" id="passwordMatch"></div>
+            </div>
+            
+            <button type="submit" class="register-btn" id="registerButton">ثبت‌نام و ایجاد حساب معلمی</button>
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+
+        <div class="teacher-features">
+            <h4>امکانات حساب معلمی:</h4>
+            <ul>
+                <li>ایجاد و مدیریت آزمون‌های مختلف</li>
+                <li>مشاهده نتایج دقیق دانش‌آموزان</li>
+                <li>تحلیل آماری پیشرفته</li>
+                <li>مدیریت چندین کلاس درس</li>
+                <li>گزارش‌گیری حرفه‌ای</li>
+            </ul>
+        </div>
+        
+        <div class="login-link">
+            <p>حساب معلمی دارید؟ <a href="teacher-login.html">وارد شوید</a></p>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">🔙 بازگشت به صفحه اصلی</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // تابع برای نمایش/مخفی کردن رمز
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggleBtn = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggleBtn.textContent = '🔒';
+            } else {
+                input.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        // 🔥 تابع جدید: ریست داده‌های معلمان
+        function resetTeacherData() {
+            if (confirm('⚠️ آیا مطمئن هستید می‌خواهید تمام داده‌های معلمان را پاک کنید؟')) {
+                localStorage.removeItem('teachers');
+                alert('✅ داده‌های معلمان با موفقیت پاک شدند!');
+                checkTeacherLimit();
+                document.getElementById('successMessage').textContent = 'داده‌ها ریست شدند. اکنون می‌توانید ثبت‌نام کنید.';
+            }
+        }
+
+        // بررسی تعداد معلمان و به روزرسانی رابط کاربری
+        function checkTeacherLimit() {
+            const existingTeachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            const currentCount = existingTeachers.length;
+            const maxTeachers = 2;
+            
+            // به روزرسانی شمارنده
+            document.getElementById('currentTeacherCount').textContent = currentCount;
+            
+            // اگر به حد مجاز رسیده باشد
+            if (currentCount >= maxTeachers) {
+                document.getElementById('registerButton').disabled = true;
+                document.getElementById('registerButton').textContent = '❌ ظرفیت تکمیل شده';
+                document.getElementById('registerButton').style.background = '#95a5a6';
+                document.getElementById('limitWarning').innerHTML = 
+                    '❌ <strong>ظرفیت تکمیل شده!</strong> امکان ثبت‌نام معلم جدید وجود ندارد';
+                document.getElementById('limitWarning').style.background = '#f8d7da';
+                document.getElementById('limitWarning').style.borderColor = '#f5c6cb';
+                document.getElementById('limitWarning').style.color = '#721c24';
+                
+                // مخفی کردن فرم
+                document.getElementById('registerForm').style.display = 'none';
+            } else {
+                document.getElementById('registerButton').disabled = false;
+                document.getElementById('registerButton').textContent = 'ثبت‌نام و ایجاد حساب معلمی';
+                document.getElementById('registerButton').style.background = '#e74c3c';
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
+
+        // اعتبارسنجی کد ملی
+        document.getElementById('nationalCode').addEventListener('input', function() {
+            const nationalCode = this.value;
+            const errorElement = document.getElementById('nationalCodeError');
+            
+            // فقط اعداد مجاز
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            if (nationalCode.length === 0) {
+                errorElement.textContent = '';
+                this.classList.remove('input-error');
+                return;
+            }
+
+            if (nationalCode.length !== 10) {
+                errorElement.textContent = '❌ کد ملی باید ۱۰ رقم باشد';
+                this.classList.add('input-error');
+            } else {
+                errorElement.textContent = '✅ کد ملی معتبر';
+                errorElement.style.color = '#27ae60';
+                this.classList.remove('input-error');
+            }
+        });
+
+        // بررسی تطابق رمز عبور
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const matchElement = document.getElementById('passwordMatch');
+
+            if (confirmPassword.length === 0) {
+                matchElement.textContent = '';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                matchElement.textContent = '❌ رمزهای عبور مطابقت ندارند';
+            } else {
+                matchElement.textContent = '✅ رمزهای عبور مطابقت دارند';
+                matchElement.style.color = '#27ae60';
+            }
+        });
+
+        // ثبت‌نام معلم
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const teacherData = {
+                fullName: document.getElementById('fullName').value,
+                nationalCode: document.getElementById('nationalCode').value,
+                subject: document.getElementById('subject').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                registerDate: new Date().toLocaleDateString('fa-IR')
+            };
+
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // اعتبارسنجی
+            if (teacherData.password !== confirmPassword) {
+                errorMessage.textContent = '❌ رمزهای عبور مطابقت ندارند';
+                return;
+            }
+
+            if (teacherData.password.length < 6) {
+                errorMessage.textContent = '❌ رمز عبور باید حداقل ۶ کاراکتر باشد';
+                return;
+            }
+
+            if (teacherData.nationalCode.length !== 10) {
+                errorMessage.textContent = '❌ کد ملی باید ۱۰ رقم باشد';
+                return;
+            }
+
+            // بررسی تکراری نبودن کد ملی
+            const existingTeachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            const existingTeacher = existingTeachers.find(t => t.nationalCode === teacherData.nationalCode);
+            
+            if (existingTeacher) {
+                errorMessage.textContent = '❌ این کد ملی قبلا ثبت شده است';
+                return;
+            }
+
+            // بررسی محدودیت تعداد معلمان
+            if (existingTeachers.length >= 2) {
+                errorMessage.textContent = '❌ ظرفیت معلمان تکمیل شده است. فقط ۲ نفر می‌توانند ثبت‌نام کنند.';
+                return;
+            }
+
+            // ذخیره در localStorage
+            existingTeachers.push(teacherData);
+            localStorage.setItem('teachers', JSON.stringify(existingTeachers));
+
+            // نمایش پیام موفقیت
+            errorMessage.textContent = '';
+            successMessage.textContent = '✅ ثبت‌نام معلم با موفقیت انجام شد! در حال انتقال...';
+
+            // به روزرسانی شمارنده
+            checkTeacherLimit();
+
+            // هدایت به صفحه لاگین بعد از ۲ ثانیه
+            setTimeout(() => {
+                window.location.href = 'teacher-login.html';
+            }, 2000);
+        });
+
+        // بارگذاری اولیه - بررسی محدودیت
+        document.addEventListener('DOMContentLoaded', function() {
+            // 🔥 پاک کردن داده‌های پیشفرض قبلی (اگر وجود دارند)
+            const existingTeachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            const hasOldData = existingTeachers.some(teacher => teacher.teacherId); // اگر teacherId داشته باشند یعنی داده قدیمی است
+            
+            if (hasOldData) {
+                // داده‌های قدیمی را پاک کن
+                localStorage.removeItem('teachers');
+                document.getElementById('successMessage').textContent = '✅ داده‌های قدیمی پاک شدند. اکنون می‌توانید ثبت‌نام کنید.';
+            }
+            
+            checkTeacherLimit();
+        });
+    </script>
+</body>
+</html>

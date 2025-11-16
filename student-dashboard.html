@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل دانش‌آموز - ققنوس ادب</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .student-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* هدر */
+        .student-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .student-info h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .student-info p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .success-btn {
+            background: linear-gradient(45deg, #27ae60, #219a52);
+            color: white;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .warning-btn {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 73, 94, 0.4);
+        }
+
+        /* تب‌ها */
+        .tabs-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            color: white;
+            font-weight: bold;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom: 3px solid #fff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* محتوای تب‌ها */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: #3498db;
+        }
+
+        .stat-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        /* بازی‌ها */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .game-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: #3498db;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .game-desc {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* مینی‌گیم‌ها */
+        .mini-game {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .game-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .word-pair {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            cursor: grab;
+            transition: all 0.3s ease;
+        }
+
+        .word-pair:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .word-pair.dragging {
+            opacity: 0.5;
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.active {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .poem-container {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .poem-text {
+            font-size: 1.3rem;
+            line-height: 2;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .poet-name {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* جدول نتایج */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .results-table th {
+            background: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .grade-excellent { color: #27ae60; font-weight: bold; }
+        .grade-good { color: #f39c12; font-weight: bold; }
+        .grade-average { color: #e67e22; font-weight: bold; }
+        .grade-poor { color: #e74c3c; font-weight: bold; }
+
+        /* فوتر */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .developer-credit {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+
+        /* وضعیت آنلاین */
+        .online-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #27ae60;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #27ae60;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* دکمه گنجور */
+        .ganjoor-btn {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .ganjoor-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="student-container">
+        <!-- هدر -->
+        <div class="student-header">
+            <div class="student-info">
+                <h1>🎓 پنل دانش‌آموز - ققنوس ادب</h1>
+                <p id="studentWelcome">خوش آمدید!</p>
+                <div class="online-status">
+                    <div class="status-dot"></div>
+                    <span>آنلاین</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="https://ganjoor.net" target="_blank" class="ganjoor-btn">📚 ورود به گنجور</a>
+                <button class="btn logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+        </div>
+
+        <!-- تب‌های اصلی -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('dashboard')">📊 داشبورد</div>
+                <div class="tab" onclick="switchTab('exams')">📝 آزمون‌ها</div>
+                <div class="tab" onclick="switchTab('results')">📊 نتایج</div>
+                <div class="tab" onclick="switchTab('games')">🎮 بازی‌های آموزشی</div>
+                <div class="tab" onclick="switchTab('poetry')">📜 گنجینه اشعار</div>
+                <div class="tab" onclick="switchTab('report')">📬 گزارش مشکل</div>
+            </div>
+
+            <!-- تب داشبورد -->
+            <div class="tab-content active" id="dashboard-tab">
+                <h2>📊 داشبورد تحصیلی</h2>
+                
+                <!-- آمار سریع -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3>آزمون‌های انجام شده</h3>
+                        <div class="stat-number" id="examsTaken">0</div>
+                        <p>تعداد کل آزمون‌ها</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>میانگین نمرات</h3>
+                        <div class="stat-number" id="averageGrade">0%</div>
+                        <p>میانگین درصدها</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>آزمون‌های فعال</h3>
+                        <div class="stat-number" id="activeExamsCount">0</div>
+                        <p>آزمون‌های در دسترس</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>رتبه در کلاس</h3>
+                        <div class="stat-number" id="classRank">-</div>
+                        <p>موقعیت شما در کلاس</p>
+                    </div>
+                </div>
+
+                <!-- بازی‌های فوری -->
+                <h3 style="margin: 40px 0 20px 0; color: #2c3e50;">🎯 بازی‌های فوری</h3>
+                <div class="games-grid">
+                    <div class="game-card" onclick="startWordGame()">
+                        <div class="game-icon">🔤</div>
+                        <div class="game-title">بازی فعل و کلمه</div>
+                        <div class="game-desc">کلمات و افعال را به درستی مرتب کنید</div>
+                        <button class="btn primary-btn">شروع بازی</button>
+                    </div>
+                    <div class="game-card" onclick="showRandomPoem()">
+                        <div class="game-icon">📜</div>
+                        <div class="game-title">اشعار ناب</div>
+                        <div class="game-desc">مشاهده اشعار تصادفی از شاعران بزرگ</div>
+                        <button class="btn success-btn">نمایش شعر</button>
+                    </div>
+                    <div class="game-card" onclick="startGrammarGame()">
+                        <div class="game-icon">✍️</div>
+                        <div class="game-title">بازی دستور زبان</div>
+                        <div class="game-desc">تمرین قواعد دستور زبان فارسی</div>
+                        <button class="btn warning-btn">شروع بازی</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب آزمون‌ها -->
+            <div class="tab-content" id="exams-tab">
+                <h2>📝 آزمون‌های در دسترس</h2>
+                <div id="activeExamsContainer">
+                    <!-- آزمون‌های فعال اینجا نمایش داده می‌شوند -->
+                </div>
+            </div>
+
+            <!-- تب نتایج -->
+            <div class="tab-content" id="results-tab">
+                <h2>📊 نتایج آزمون‌های گذشته</h2>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>نام آزمون</th>
+                            <th>تاریخ</th>
+                            <th>نمره</th>
+                            <th>درصد</th>
+                            <th>وضعیت</th>
+                            <th>جزئیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- نتایج اینجا لود می‌شوند -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- تب بازی‌های آموزشی -->
+            <div class="tab-content" id="games-tab">
+                <h2>🎮 بازی‌های آموزشی فارسی</h2>
+                
+                <!-- بازی فعل و کلمه -->
+                <div class="mini-game" id="wordGame">
+                    <div class="game-header">
+                        <h2>🔤 بازی تطبیق فعل و کلمه</h2>
+                        <p>کلمات و افعال مربوطه را به هم وصل کنید</p>
+                    </div>
+                    <div class="game-content">
+                        <div id="wordPairsContainer">
+                            <!-- کلمات اینجا نمایش داده می‌شوند -->
+                        </div>
+                        <div class="drop-zone" id="dropZone1">
+                            <p>افعال را اینجا رها کنید</p>
+                        </div>
+                        <div class="drop-zone" id="dropZone2">
+                            <p>کلمات را اینجا رها کنید</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="checkWordGame()" style="margin-top: 20px;">✅ بررسی پاسخ</button>
+                        <div id="gameResult" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+
+                <!-- بازی دستور زبان -->
+                <div class="mini-game" id="grammarGame">
+                    <div class="game-header">
+                        <h2>✍️ بازی دستور زبان</h2>
+                        <p>جملات را از نظر دستوری تصحیح کنید</p>
+                    </div>
+                    <div class="game-content">
+                        <div id="grammarQuestions">
+                            <!-- سوالات دستور زبان -->
+                        </div>
+                        <button class="btn success-btn" onclick="checkGrammarGame()" style="margin-top: 20px;">📝 بررسی پاسخ‌ها</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب اشعار -->
+            <div class="tab-content" id="poetry-tab">
+                <h2>📜 گنجینه اشعار فارسی</h2>
+                <div class="poem-container" id="randomPoem">
+                    <div class="poem-text" id="poemText">
+                        برای مشاهده شعر، دکمه زیر را بفشارید
+                    </div>
+                    <div class="poet-name" id="poetName"></div>
+                </div>
+                <button class="btn primary-btn bounce" onclick="showRandomPoem()" style="margin: 20px auto; display: block;">
+                    🎲 نمایش شعر تصادفی
+                </button>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="https://ganjoor.net" target="_blank" class="ganjoor-btn">
+                        📚 مشاهده کامل اشعار در گنجور
+                    </a>
+                </div>
+            </div>
+
+            <!-- تب گزارش مشکل -->
+            <div class="tab-content" id="report-tab">
+                <h2>📬 گزارش مشکل یا پیشنهاد</h2>
+                <div class="mini-game">
+                    <div class="game-content">
+                        <div class="form-group">
+                            <label for="reportType">نوع گزارش:</label>
+                            <select id="reportType" class="form-control">
+                                <option value="bug">گزارش مشکل فنی</option>
+                                <option value="suggestion">پیشنهاد بهبود</option>
+                                <option value="content">مشکل در محتوا</option>
+                                <option value="other">سایر</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportTitle">عنوان:</label>
+                            <input type="text" id="reportTitle" class="form-control" placeholder="عنوان مشکل یا پیشنهاد">
+                        </div>
+                        <div class="form-group">
+                            <label for="reportDescription">شرح کامل:</label>
+                            <textarea id="reportDescription" class="form-control" rows="5" placeholder="شرح کامل مشکل یا پیشنهاد خود را بنویسید..."></textarea>
+                        </div>
+                        <button class="btn primary-btn" onclick="submitReport()" style="width: 100%;">
+                            📨 ارسال گزارش به توسعه‌دهنده
+                        </button>
+                        <div id="reportResult" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <p>سامانه آموزشی ققنوس ادب | نسخه ۱.۰</p>
+            <p class="developer-credit">🛠️ توسعه داده شده توسط سینا جعفری</p>
+        </div>
+    </div>
+
+    <script>
+        // داده‌های بازی
+        const wordPairs = [
+            { word: "درخت", verb: "می‌روید" },
+            { word: "باران", verb: "می‌بارد" },
+            { word: "خورشید", verb: "می‌درخشد" },
+            { word: "کتاب", verb: "خوانده می‌شود" },
+            { word: "دانش‌آموز", verb: "می‌خواند" }
+        ];
+
+        const grammarQuestions = [
+            {
+                question: "جمله 'او به مدرسه رفت' را از نظر زمان فعل بررسی کنید:",
+                options: ["صحیح است", "غلط است - باید 'می‌رود' باشد", "غلط است - باید 'رفته است' باشد"],
+                correct: 0
+            },
+            {
+                question: "کدام یک از افعال زیر ماضی است؟",
+                options: ["می‌رود", "رفته است", "خواهد رفت"],
+                correct: 1
+            }
+        ];
+
+        const poems = [
+            {
+                text: "بنى آدم اعضای یک پیکرند\nکه در آفرينش ز یک گوهرند\nچو عضوى به درد آورد روزگار\nدگر عضوها را نماند قرار",
+                poet: "سعدی"
+            },
+            {
+                text: "آدمى در عالم خاکى نمی‌آید به دست\nعالمى دیگر بباید ساخت و از نو آدمى",
+                poet: "عطار نیشابوری"
+            },
+            {
+                text: "دریغ است ایران که ویران شود\nکنام پلنگان و شیران شود",
+                poet: "فردوسی"
+            },
+            {
+                text: "هر که ناموخت از گذشت روزگار\nهیچ ناموزد ز هیچ آموزگار",
+                poet: "فردوسی"
+            }
+        ];
+
+        // متغیرهای global
+        let currentStudent = null;
+        let draggedItem = null;
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStudentData();
+            loadStatistics();
+            loadActiveExams();
+            loadExamResults();
+            initializeWordGame();
+            initializeGrammarGame();
+        });
+
+        // بارگذاری اطلاعات دانش‌آموز
+        function loadStudentData() {
+            const savedStudent = localStorage.getItem('currentStudent');
+            if (!savedStudent) {
+                window.location.href = 'student-login.html';
+                return;
+            }
+
+            currentStudent = JSON.parse(savedStudent);
+            document.getElementById('studentWelcome').textContent = 
+                `سلام ${currentStudent.fullName}!`;
+        }
+
+        // بارگذاری آمار
+        function loadStatistics() {
+            const results = JSON.parse(localStorage.getItem('examResults')) || [];
+            const studentResults = results.filter(result => 
+                result.studentId === currentStudent.nationalCode
+            );
+
+            const exams = JSON.parse(localStorage.getItem('exams')) || [];
+            const activeExams = exams.filter(exam => 
+                new Date(exam.endTime) > new Date() && exam.isActive
+            );
+
+            document.getElementById('examsTaken').textContent = studentResults.length;
+            document.getElementById('activeExamsCount').textContent = activeExams.length;
+
+            if (studentResults.length > 0) {
+                const average = studentResults.reduce((sum, result) => sum + result.percentage, 0) / studentResults.length;
+                document.getElementById('averageGrade').textContent = average.toFixed(1) + '%';
+                
+                // محاسبه رتبه ساده
+                const allStudents = JSON.parse(localStorage.getItem('students')) || [];
+                document.getElementById('classRank').textContent = `#${Math.min(studentResults.length + 1, allStudents.length)}`;
+            }
+        }
+
+        // بارگذاری آزمون‌های فعال
+        function loadActiveExams() {
+            const exams = JSON.parse(localStorage.getItem('exams')) || [];
+            const activeExams = exams.filter(exam => 
+                new Date(exam.endTime) > new Date() && exam.isActive
+            );
+            
+            const container = document.getElementById('activeExamsContainer');
+            container.innerHTML = '';
+
+            if (activeExams.length === 0) {
+                container.innerHTML = `
+                    <div class="mini-game">
+                        <div class="game-content" style="text-align: center;">
+                            <h3>📭 هیچ آزمون فعالی وجود ندارد</h3>
+                            <p>در حال حاضر هیچ آزمونی برای شرکت کردن موجود نیست.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            activeExams.forEach(exam => {
+                const examCard = document.createElement('div');
+                examCard.className = 'mini-game';
+                
+                const now = new Date();
+                const endTime = new Date(exam.endTime);
+                const timeLeft = endTime - now;
+                const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+                examCard.innerHTML = `
+                    <div class="game-header">
+                        <h3>${exam.title}</h3>
+                        <p>${exam.subject} - مدت زمان: ${exam.duration} دقیقه</p>
+                    </div>
+                    <div class="game-content">
+                        <p><strong>تعداد سوالات:</strong> ${exam.questions.length}</p>
+                        <p><strong>زمان باقی‌مانده:</strong> ${hoursLeft} ساعت و ${minutesLeft} دقیقه</p>
+                        <p><strong>مهلت:</strong> ${new Date(exam.endTime).toLocaleDateString('fa-IR')}</p>
+                        <button class="btn primary-btn" onclick="startExam('${exam.id}')" style="margin-top: 15px;">
+                            🚀 شروع آزمون
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(examCard);
+            });
+        }
+
+        // بارگذاری نتایج آزمون‌ها
+        function loadExamResults() {
+            const results = JSON.parse(localStorage.getItem('examResults')) || [];
+            const studentResults = results.filter(result => 
+                result.studentId === currentStudent.nationalCode
+            );
+
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = '';
+
+            if (studentResults.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #7f8c8d; padding: 40px;">
+                            📭 هنوز هیچ آزمونی شرکت نکرده‌اید
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            studentResults.forEach(result => {
+                const gradeClass = getGradeClass(result.percentage);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.examTitle}</td>
+                    <td>${new Date(result.submitDate).toLocaleDateString('fa-IR')}</td>
+                    <td>${result.score}/${result.totalScore}</td>
+                    <td class="${gradeClass}">${result.percentage}%</td>
+                    <td>${getStatusText(result.percentage)}</td>
+                    <td>
+                        <button class="btn primary-btn" style="padding: 8px 15px; font-size: 12px;" 
+                                onclick="viewExamDetails('${result.examId}')">
+                            مشاهده
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // تعیین کلاس نمره
+        function getGradeClass(percentage) {
+            if (percentage >= 90) return 'grade-excellent';
+            if (percentage >= 75) return 'grade-good';
+            if (percentage >= 50) return 'grade-average';
+            return 'grade-poor';
+        }
+
+        // تعیین وضعیت
+        function getStatusText(percentage) {
+            if (percentage >= 90) return 'عالی';
+            if (percentage >= 75) return 'خوب';
+            if (percentage >= 50) return 'قابل قبول';
+            return 'نیاز به تلاش بیشتر';
+        }
+
+        // شروع آزمون
+        function startExam(examId) {
+            if (confirm('آیا می‌خواهید آزمون را شروع کنید؟ پس از شروع، زمان‌گیری آغاز می‌شود.')) {
+                window.location.href = `exam-page.html?examId=${examId}`;
+            }
+        }
+
+        // مشاهده جزئیات آزمون
+        function viewExamDetails(examId) {
+            alert(`جزئیات آزمون با شناسه ${examId} نمایش داده می‌شود`);
+        }
+
+        // تعویض تب‌ها
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // بازی فعل و کلمه
+        function initializeWordGame() {
+            const container = document.getElementById('wordPairsContainer');
+            container.innerHTML = '';
+            
+            // مخلوط کردن کلمات
+            const shuffledWords = [...wordPairs].sort(() => Math.random() - 0.5);
+            
+            shuffledWords.forEach((pair, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-pair';
+                wordElement.textContent = pair.word;
+                wordElement.draggable = true;
+                wordElement.dataset.type = 'word';
+                wordElement.dataset.index = index;
+                
+                wordElement.addEventListener('dragstart', handleDragStart);
+                wordElement.addEventListener('dragend', handleDragEnd);
+                
+                container.appendChild(wordElement);
+            });
+            
+            // اضافه کردن افعال
+            const shuffledVerbs = [...wordPairs].sort(() => Math.random() - 0.5);
+            
+            shuffledVerbs.forEach((pair, index) => {
+                const verbElement = document.createElement('div');
+                verbElement.className = 'word-pair';
+                verbElement.textContent = pair.verb;
+                verbElement.draggable = true;
+                verbElement.dataset.type = 'verb';
+                verbElement.dataset.index = index;
+                
+                verbElement.addEventListener('dragstart', handleDragStart);
+                verbElement.addEventListener('dragend', handleDragEnd);
+                
+                container.appendChild(verbElement);
+            });
+            
+            // تنظیم drop zones
+            const dropZones = document.querySelectorAll('.drop-zone');
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            this.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', this.dataset.index + ',' + this.dataset.type);
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            this.classList.add('active');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('active');
+            
+            const data = e.dataTransfer.getData('text/plain').split(',');
+            const index = parseInt(data[0]);
+            const type = data[1];
+            
+            if (this.children.length === 0) {
+                const item = document.querySelector(`[data-index="${index}"][data-type="${type}"]`);
+                if (item) {
+                    this.appendChild(item.cloneNode(true));
+                    item.style.display = 'none';
+                }
+            }
+        }
+
+        function checkWordGame() {
+            const dropZone1 = document.getElementById('dropZone1');
+            const dropZone2 = document.getElementById('dropZone2');
+            
+            let correctPairs = 0;
+            const totalPairs = wordPairs.length;
+            
+            // بررسی تطابق‌ها
+            // اینجا منطق بررسی پاسخ‌ها پیاده‌سازی می‌شود
+            
+            const resultDiv = document.getElementById('gameResult');
+            resultDiv.innerHTML = `
+                <div class="success-message">
+                    🎉 خوب بود! ${correctPairs} از ${totalPairs} تطابق صحیح بود.
+                </div>
+            `;
+        }
+
+        // بازی دستور زبان
+        function initializeGrammarGame() {
+            const container = document.getElementById('grammarQuestions');
+            container.innerHTML = '';
+            
+            grammarQuestions.forEach((question, qIndex) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mini-game';
+                questionDiv.style.marginBottom = '20px';
+                
+                let optionsHTML = '';
+                question.options.forEach((option, oIndex) => {
+                    optionsHTML += `
+                        <div style="margin: 10px 0;">
+                            <input type="radio" id="q${qIndex}o${oIndex}" name="q${qIndex}" value="${oIndex}">
+                            <label for="q${qIndex}o${oIndex}">${option}</label>
+                        </div>
+                    `;
+                });
+                
+                questionDiv.innerHTML = `
+                    <h4>${question.question}</h4>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function checkGrammarGame() {
+            let correctAnswers = 0;
+            
+            grammarQuestions.forEach((question, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === question.correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            alert(`🎯 شما ${correctAnswers} از ${grammarQuestions.length} سوال را صحیح پاسخ دادید!`);
+        }
+
+        // نمایش شعر تصادفی
+        function showRandomPoem() {
+            const randomIndex = Math.floor(Math.random() * poems.length);
+            const poem = poems[randomIndex];
+            
+            document.getElementById('poemText').textContent = poem.text;
+            document.getElementById('poetName').textContent = `— ${poem.poet}`;
+            
+            // پویا شدن به تب اشعار
+            switchTab('poetry');
+        }
+
+        // شروع بازی‌ها
+        function startWordGame() {
+            switchTab('games');
+            initializeWordGame();
+        }
+
+        function startGrammarGame() {
+            switchTab('games');
+            initializeGrammarGame();
+        }
+
+        // ارسال گزارش
+        function submitReport() {
+            const type = document.getElementById('reportType').value;
+            const title = document.getElementById('reportTitle').value;
+            const description = document.getElementById('reportDescription').value;
+            
+            if (!title || !description) {
+                alert('❌ لطفا عنوان و شرح گزارش را وارد کنید');
+                return;
+            }
+            
+            // ذخیره گزارش در localStorage
+            const reports = JSON.parse(localStorage.getItem('studentReports')) || [];
+            const newReport = {
+                id: 'report_' + Date.now(),
+                studentName: currentStudent.fullName,
+                studentId: currentStudent.nationalCode,
+                type: type,
+                title: title,
+                description: description,
+                date: new Date().toLocaleString('fa-IR'),
+                status: 'new'
+            };
+            
+            reports.push(newReport);
+            localStorage.setItem('studentReports', JSON.stringify(reports));
+            
+            document.getElementById('reportResult').innerHTML = `
+                <div class="success-message">
+                    ✅ گزارش شما با موفقیت ارسال شد. 
+                    <br>توسعه‌دهنده به زودی آن را بررسی خواهد کرد.
+                </div>
+            `;
+            
+            // پاک کردن فرم
+            document.getElementById('reportTitle').value = '';
+            document.getElementById('reportDescription').value = '';
+        }
+
+        // خروج از سیستم
+        function logout() {
+            if (confirm('آیا می‌خواهید از حساب کاربری خود خارج شوید؟')) {
+                localStorage.removeItem('currentStudent');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

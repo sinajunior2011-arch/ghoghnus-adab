@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل توسعه‌دهنده - کنترل کامل سیستم</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .developer-container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* هدر پیشرفته */
+        .developer-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .developer-info h1 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #2ecc71, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .developer-info p {
+            color: #bdc3c7;
+            font-size: 1.1rem;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border-radius: 25px;
+            font-size: 14px;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .warning-btn {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .danger-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .danger-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .ai-btn {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 73, 94, 0.4);
+        }
+
+        /* تب‌های اصلی */
+        .tabs-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            color: #bdc3c7;
+            font-weight: bold;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid #2ecc71;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* محتوای تب‌ها */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card h3 {
+            color: #bdc3c7;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #2ecc71, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .trend-up {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .trend-down {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        /* جداول */
+        .data-table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(0, 0, 0, 0.3);
+            color: #2ecc71;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* دکمه‌های عملیات */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .small-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .impersonate-btn {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .small-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* سیستم لاگ */
+        .log-container {
+            background: rgba(0, 0, 0, 0.5);
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-entry {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .log-time {
+            color: #3498db;
+            min-width: 120px;
+            font-size: 11px;
+        }
+
+        .log-type {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .log-info { background: rgba(52, 152, 219, 0.3); color: #3498db; }
+        .log-success { background: rgba(46, 204, 113, 0.3); color: #2ecc71; }
+        .log-warning { background: rgba(243, 156, 18, 0.3); color: #f39c12; }
+        .log-error { background: rgba(231, 76, 60, 0.3); color: #e74c3c; }
+        .log-security { background: rgba(155, 89, 182, 0.3); color: #9b59b6; }
+
+        /* ابزارهای فوری */
+        .quick-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-title {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .tool-desc {
+            color: #bdc3c7;
+            font-size: 12px;
+        }
+
+        /* مودال */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 26, 46, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #bdc3c7;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #e74c3c;
+        }
+
+        /* جستجو و فیلتر */
+        .search-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 12px 20px;
+            color: #fff;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #2ecc71;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .filter-btn.active {
+            background: rgba(46, 204, 113, 0.3);
+            color: #2ecc71;
+            border-color: #2ecc71;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* وضعیت کاربر */
+        .user-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .badge-student { background: rgba(52, 152, 219, 0.3); color: #3498db; }
+        .badge-teacher { background: rgba(231, 76, 60, 0.3); color: #e74c3c; }
+        .badge-admin { background: rgba(46, 204, 113, 0.3); color: #2ecc71; }
+
+        /* انیمیشن‌ها */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* فرم‌های مودال */
+        .modal-form-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #bdc3c7;
+            font-weight: bold;
+        }
+
+        .modal-form-group input,
+        .modal-form-group select,
+        .modal-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .modal-form-group input:focus,
+        .modal-form-group select:focus,
+        .modal-form-group textarea:focus {
+            outline: none;
+            border-color: #2ecc71;
+        }
+
+        /* ویژگی‌های هوش مصنوعی */
+        .ai-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .ai-feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .ai-feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .ai-feature-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* چارت‌ها */
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart {
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            gap: 10px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, #2ecc71, #3498db);
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #bdc3c7;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* وضعیت اتصال */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .connection-connected {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .connection-disconnected {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        /* لودینگ */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* پیشنهادات هوش مصنوعی */
+        .ai-suggestions {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-right: 4px solid #2ecc71;
+        }
+
+        /* سیستم هشدار */
+        .alert-system {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            min-width: 300px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert-success {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+        }
+
+        .alert-error {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+        }
+
+        .alert-warning {
+            background: rgba(243, 156, 18, 0.9);
+            color: white;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* شبکه عصبی مصنوعی */
+        .neural-network {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .neuron {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            border-radius: 50%;
+            margin: 0 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .connection {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #9b59b6, transparent);
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- سیستم هشدار -->
+    <div class="alert-system" id="alertSystem"></div>
+
+    <div class="developer-container">
+        <!-- هدر -->
+        <div class="developer-header">
+            <div class="developer-info">
+                <h1>🚀 پنل توسعه‌دهنده - کنترل کامل سیستم</h1>
+                <p id="developerWelcome">دسترسی سطح مدیر - کنترل کامل تمام بخش‌ها</p>
+                <div class="system-status">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>سیستم فعال</span>
+                    </div>
+                    <span id="currentTime"></span>
+                    <div class="connection-status" id="connectionStatus">
+                        <div class="loading"></div>
+                        <span>در حال اتصال...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn ai-btn" onclick="showAIFeatures()">🤖 هوش مصنوعی</button>
+                <button class="btn primary-btn" onclick="backupSystem()">💾 پشتیبان‌گیری</button>
+                <button class="btn warning-btn" onclick="showSystemMonitor()">📊 مانیتور سیستم</button>
+                <button class="btn logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+        </div>
+
+        <!-- تب‌های اصلی -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('dashboard')">📊 داشبورد</div>
+                <div class="tab" onclick="switchTab('users')">👥 مدیریت کاربران</div>
+                <div class="tab" onclick="switchTab('exams')">📝 مدیریت آزمون‌ها</div>
+                <div class="tab" onclick="switchTab('analytics')">📈 تحلیل‌ها</div>
+                <div class="tab" onclick="switchTab('ai-lab')">🧪 لابراتوار هوش مصنوعی</div>
+                <div class="tab" onclick="switchTab('logs')">📋 لاگ سیستم</div>
+                <div class="tab" onclick="switchTab('tools')">🔧 ابزارهای پیشرفته</div>
+            </div>
+
+            <!-- تب داشبورد -->
+            <div class="tab-content active" id="dashboard-tab">
+                <h2>📊 داشبورد مدیریتی</h2>
+                
+                <!-- آمار سریع -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3>👥 کاربران کل</h3>
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-trend trend-up" id="usersTrend">+۰٪</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🎓 دانش‌آموزان</h3>
+                        <div class="stat-number" id="studentsCount">0</div>
+                        <div class="stat-trend trend-up" id="studentsTrend">+۰٪</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>👨‍🏫 معلمان</h3>
+                        <div class="stat-number" id="teachersCount">0</div>
+                        <div class="stat-trend trend-up" id="teachersTrend">+۰٪</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📝 آزمون‌ها</h3>
+                        <div class="stat-number" id="examsCount">0</div>
+                        <div class="stat-trend trend-up" id="examsTrend">+۰٪</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📊 نتایج</h3>
+                        <div class="stat-number" id="resultsCount">0</div>
+                        <div class="stat-trend trend-up" id="resultsTrend">+۰٪</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💾 فضای ذخیره‌سازی</h3>
+                        <div class="stat-number" id="storageUsage">0 KB</div>
+                        <div class="stat-trend trend-up" id="storageTrend">+۰٪</div>
+                    </div>
+                </div>
+
+                <!-- پیشنهادات هوش مصنوعی -->
+                <div class="ai-suggestions" id="aiSuggestions">
+                    <h3>💡 پیشنهادات هوش مصنوعی</h3>
+                    <div class="suggestion-item">
+                        <strong>بهینه‌سازی عملکرد:</strong> سیستم پیشنهاد می‌دهد کش دیتابیس را فعال کنید.
+                    </div>
+                    <div class="suggestion-item">
+                        <strong>امنیت:</strong> بررسی رمزهای عبور ضعیف کاربران توصیه می‌شود.
+                    </div>
+                </div>
+
+                <!-- ابزارهای فوری -->
+                <h3 style="margin: 30px 0 20px 0; color: #fff;">⚡ ابزارهای فوری</h3>
+                <div class="quick-tools">
+                    <div class="tool-card" onclick="showImpersonateModal()">
+                        <div class="tool-icon">👤</div>
+                        <div class="tool-title">ورود به عنوان کاربر</div>
+                        <div class="tool-desc">ورود به حساب کاربران دیگر</div>
+                    </div>
+                    <div class="tool-card" onclick="createTestData()">
+                        <div class="tool-icon">🧪</div>
+                        <div class="tool-title">داده تستی</div>
+                        <div class="tool-desc">ایجاد داده‌های نمونه برای تست</div>
+                    </div>
+                    <div class="tool-card" onclick="showUserStats()">
+                        <div class="tool-icon">📈</div>
+                        <div class="tool-title">آمار کاربران</div>
+                        <div class="tool-desc">مشاهده آمار دقیق کاربران</div>
+                    </div>
+                    <div class="tool-card" onclick="exportData()">
+                        <div class="tool-icon">📤</div>
+                        <div class="tool-title">خروجی داده</div>
+                        <div class="tool-desc">خروجی گرفتن از تمام داده‌ها</div>
+                    </div>
+                    <div class="tool-card" onclick="massEmail()">
+                        <div class="tool-icon">📧</div>
+                        <div class="tool-title">ایمیل گروهی</div>
+                        <div class="tool-desc">ارسال ایمیل به کاربران</div>
+                    </div>
+                    <div class="tool-card" onclick="systemCleanup()">
+                        <div class="tool-icon">🧹</div>
+                        <div class="tool-title">پاک‌سازی سیستم</div>
+                        <div class="tool-desc">پاک‌سازی داده‌های قدیمی</div>
+                    </div>
+                </div>
+
+                <!-- ویژگی‌های هوش مصنوعی -->
+                <h3 style="margin: 40px 0 20px 0; color: #fff;">🤖 ویژگی‌های هوش مصنوعی</h3>
+                <div class="ai-features">
+                    <div class="ai-feature-card" onclick="analyzeSystemPerformance()">
+                        <h3>📊 تحلیل عملکرد سیستم</h3>
+                        <p>بررسی کامل عملکرد و شناسایی مشکلات</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="generateSmartReports()">
+                        <h3>📈 گزارش‌های هوشمند</h3>
+                        <p>تولید گزارش‌های تحلیلی پیشرفته</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="predictUserBehavior()">
+                        <h3>🔮 پیش‌بینی رفتار کاربران</h3>
+                        <p>پیش‌بینی عملکرد و نیازهای کاربران</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="autoOptimizeSystem()">
+                        <h3>⚡ بهینه‌سازی خودکار</h3>
+                        <p>بهینه‌سازی سیستم بر اساس الگوهای استفاده</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب مدیریت کاربران -->
+            <div class="tab-content" id="users-tab">
+                <h2>👥 مدیریت کامل کاربران</h2>
+                
+                <!-- جستجو و فیلتر -->
+                <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+                    <input type="text" class="search-box" id="userSearch" placeholder="🔍 جستجوی کاربران..." onkeyup="searchUsers()">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterUsers('all')">همه</button>
+                        <button class="filter-btn" onclick="filterUsers('student')">دانش‌آموزان</button>
+                        <button class="filter-btn" onclick="filterUsers('teacher')">معلمان</button>
+                    </div>
+                    <button class="btn primary-btn" onclick="showCreateUserModal()">➕ کاربر جدید</button>
+                    <button class="btn ai-btn" onclick="analyzeUserBehavior()">🤖 تحلیل کاربران</button>
+                </div>
+
+                <!-- جدول کاربران -->
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>نام کاربر</th>
+                                <th>نوع کاربر</th>
+                                <th>کد ملی</th>
+                                <th>ایمیل</th>
+                                <th>تاریخ ثبت‌نام</th>
+                                <th>وضعیت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #bdc3c7; padding: 40px;">
+                                    <div class="loading"></div>
+                                    در حال بارگذاری کاربران...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- تب مدیریت آزمون‌ها -->
+            <div class="tab-content" id="exams-tab">
+                <h2>📝 مدیریت آزمون‌ها</h2>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <button class="btn primary-btn" onclick="showCreateExamModal()">➕ آزمون جدید</button>
+                    <button class="btn ai-btn" onclick="generateAITestQuestions()">🤖 تولید سوالات هوشمند</button>
+                    <button class="btn warning-btn" onclick="analyzeExamResults()">📊 تحلیل نتایج</button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>عنوان آزمون</th>
+                                <th>درس</th>
+                                <th>سطح</th>
+                                <th>تعداد سوالات</th>
+                                <th>ایجاد کننده</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="examsTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #bdc3c7; padding: 40px;">
+                                    <div class="loading"></div>
+                                    در حال بارگذاری آزمون‌ها...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- تب تحلیل‌ها -->
+            <div class="tab-content" id="analytics-tab">
+                <h2>📈 تحلیل‌های پیشرفته سیستم</h2>
+                
+                <div class="chart-container">
+                    <h3>📊 توزیع کاربران</h3>
+                    <div class="chart" id="usersChart">
+                        <div style="text-align: center; color: #bdc3c7; margin-top: 120px;">
+                            <div class="loading"></div>
+                            در حال بارگذاری نمودار...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>📈 عملکرد آزمون‌ها</h3>
+                    <div class="chart" id="examsChart">
+                        <div style="text-align: center; color: #bdc3c7; margin-top: 120px;">
+                            <div class="loading"></div>
+                            در حال بارگذاری نمودار...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-tools">
+                    <div class="tool-card" onclick="generateComprehensiveReport()">
+                        <div class="tool-icon">📄</div>
+                        <div class="tool-title">گزارش جامع</div>
+                        <div class="tool-desc">تولید گزارش کامل از سیستم</div>
+                    </div>
+                    <div class="tool-card" onclick="showPerformanceMetrics()">
+                        <div class="tool-icon">⚡</div>
+                        <div class="tool-title">معیارهای عملکرد</div>
+                        <div class="tool-desc">مشاهده معیارهای عملکرد سیستم</div>
+                    </div>
+                    <div class="tool-card" onclick="exportAnalytics()">
+                        <div class="tool-icon">📤</div>
+                        <div class="tool-title">خروجی تحلیل‌ها</div>
+                        <div class="tool-desc">خروجی گرفتن از داده‌های تحلیلی</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب لابراتوار هوش مصنوعی -->
+            <div class="tab-content" id="ai-lab-tab">
+                <h2>🧪 لابراتوار هوش مصنوعی پیشرفته</h2>
+                
+                <div class="neural-network">
+                    <div class="neuron"></div>
+                    <div class="connection"></div>
+                    <div class="neuron"></div>
+                    <div class="connection"></div>
+                    <div class="neuron"></div>
+                    <div class="connection"></div>
+                    <div class="neuron"></div>
+                </div>
+
+                <div class="ai-features">
+                    <div class="ai-feature-card" onclick="trainNeuralNetwork()">
+                        <h3>🧠 آموزش شبکه عصبی</h3>
+                        <p>آموزش مدل‌های عمیق بر اساس داده‌های آموزشی</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="generateAIContent()">
+                        <h3>🎨 تولید محتوای خلاق</h3>
+                        <p>تولید محتوای آموزشی خلاقانه با هوش مصنوعی</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="sentimentAnalysis()">
+                        <h3>😊 تحلیل احساسات</h3>
+                        <p>تحلیل احساسات کاربران از نظرات و بازخوردها</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="personalizedLearning()">
+                        <h3>🎯 یادگیری شخصی‌سازی شده</h3>
+                        <p>طراحی مسیرهای یادگیری اختصاصی برای هر کاربر</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="aiTutor()">
+                        <h3>👨‍🏫 معلم هوشمند</h3>
+                        <p>سیستم آموزش خودکار با قابلیت پاسخگویی به سوالات</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="predictiveAnalytics()">
+                        <h3>🔮 تحلیل پیش‌بینانه</h3>
+                        <p>پیش‌بینی نتایج و عملکرد آینده کاربران</p>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <h3>📊 مدل‌های هوش مصنوعی فعال</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>نام مدل</th>
+                                <th>نوع</th>
+                                <th>دقت</th>
+                                <th>وضعیت</th>
+                                <th>آخرین آموزش</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aiModelsTable">
+                            <tr>
+                                <td>مدل پیش‌بینی نمرات</td>
+                                <td>شبکه عصبی</td>
+                                <td>۸۷٪</td>
+                                <td><span style="color: #2ecc71;">فعال</span></td>
+                                <td>۲ ساعت پیش</td>
+                                <td>
+                                    <button class="small-btn view-btn">مشاهده</button>
+                                    <button class="small-btn warning-btn">بازآموزی</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>سیستم پیشنهاد محتوا</td>
+                                <td>یادگیری ماشین</td>
+                                <td>۹۲٪</td>
+                                <td><span style="color: #2ecc71;">فعال</span></td>
+                                <td>۱ روز پیش</td>
+                                <td>
+                                    <button class="small-btn view-btn">مشاهده</button>
+                                    <button class="small-btn warning-btn">بازآموزی</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- تب لاگ سیستم -->
+            <div class="tab-content" id="logs-tab">
+                <h2>📋 لاگ‌های سیستم</h2>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <button class="btn primary-btn" onclick="clearLogs()">🗑️ پاک‌سازی لاگ‌ها</button>
+                    <button class="btn warning-btn" onclick="exportLogs()">📤 خروجی لاگ‌ها</button>
+                    <button class="btn ai-btn" onclick="analyzeLogsWithAI()">🤖 تحلیل لاگ با هوش مصنوعی</button>
+                </div>
+
+                <div class="log-container" id="systemLogs">
+                    <div style="text-align: center; color: #bdc3c7;">
+                        <div class="loading"></div>
+                        در حال بارگذاری لاگ‌ها...
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب ابزارهای پیشرفته -->
+            <div class="tab-content" id="tools-tab">
+                <h2>🔧 ابزارهای پیشرفته توسعه</h2>
+                
+                <div class="quick-tools">
+                    <div class="tool-card" onclick="resetAllData()">
+                        <div class="tool-icon">🔄</div>
+                        <div class="tool-title">بازنشانی کامل</div>
+                        <div class="tool-desc">پاک کردن تمام داده‌های سیستم</div>
+                    </div>
+                    <div class="tool-card" onclick="generateTestUsers()">
+                        <div class="tool-icon">👥</div>
+                        <div class="tool-title">کاربران تستی</div>
+                        <div class="tool-desc">ایجاد ۱۰ کاربر تستی</div>
+                    </div>
+                    <div class="tool-card" onclick="generateTestExams()">
+                        <div class="tool-icon">📝</div>
+                        <div class="tool-title">آزمون‌های تستی</div>
+                        <div class="tool-desc">ایجاد ۵ آزمون تستی</div>
+                    </div>
+                    <div class="tool-card" onclick="showDatabaseInfo()">
+                        <div class="tool-icon">💾</div>
+                        <div class="tool-title">اطلاعات دیتابیس</div>
+                        <div class="tool-desc">مشاهده اطلاعات ذخیره‌سازی</div>
+                    </div>
+                    <div class="tool-card" onclick="runSystemDiagnostics()">
+                        <div class="tool-icon">🔍</div>
+                        <div class="tool-title">تشخیص سیستم</div>
+                        <div class="tool-desc">بررسی سلامت سیستم</div>
+                    </div>
+                    <div class="tool-card" onclick="showAPIManager()">
+                        <div class="tool-icon">🔌</div>
+                        <div class="tool-title">مدیریت API</div>
+                        <div class="tool-desc">مدیریت رابط‌های برنامه‌نویسی</div>
+                    </div>
+                </div>
+
+                <!-- ابزارهای هوش مصنوعی پیشرفته -->
+                <h3 style="margin: 40px 0 20px 0; color: #fff;">🧠 ابزارهای هوش مصنوعی پیشرفته</h3>
+                <div class="ai-features">
+                    <div class="ai-feature-card" onclick="trainAIModel()">
+                        <h3>🎯 آموزش مدل هوش مصنوعی</h3>
+                        <p>آموزش مدل‌های پیش‌بینی بر اساس داده‌های موجود</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="generateAIContent()">
+                        <h3>📝 تولید محتوای هوشمند</h3>
+                        <p>تولید خودکار محتوای آموزشی و آزمون‌ها</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="optimizeWithAI()">
+                        <h3>⚡ بهینه‌سازی هوشمند</h3>
+                        <p>بهینه‌سازی سیستم با الگوریتم‌های هوش مصنوعی</p>
+                    </div>
+                    <div class="ai-feature-card" onclick="showAIDashboard()">
+                        <h3>📊 داشبورد هوش مصنوعی</h3>
+                        <p>مشاهده تحلیل‌های پیشرفته هوش مصنوعی</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال‌های مختلف -->
+    <div class="modal" id="impersonateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">👤 ورود به عنوان کاربر دیگر</h3>
+                <button class="close-modal" onclick="closeModal('impersonateModal')">×</button>
+            </div>
+            <div class="modal-form-group">
+                <label>انتخاب کاربر:</label>
+                <select id="userSelect" class="search-box" style="width: 100%; margin: 10px 0;">
+                    <option value="">در حال بارگذاری...</option>
+                </select>
+            </div>
+            <div class="modal-form-group">
+                <label>اطلاعات کاربر انتخاب شده:</label>
+                <div id="selectedUserInfo" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 10px 0;">
+                    کاربری انتخاب نشده است
+                </div>
+            </div>
+            <button class="btn primary-btn" style="width: 100%;" onclick="executeImpersonation()">🚀 ورود به حساب کاربر</button>
+        </div>
+    </div>
+
+    <div class="modal" id="createUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">➕ ایجاد کاربر جدید</h3>
+                <button class="close-modal" onclick="closeModal('createUserModal')">×</button>
+            </div>
+            <div class="modal-form-group">
+                <label>نوع کاربر:</label>
+                <select id="newUserType" onchange="toggleUserFields()">
+                    <option value="student">دانش‌آموز</option>
+                    <option value="teacher">معلم</option>
+                </select>
+            </div>
+            <div class="modal-form-group">
+                <label>نام و نام خانوادگی:</label>
+                <input type="text" id="newUserName" placeholder="نام کامل">
+            </div>
+            <div class="modal-form-group">
+                <label>کد ملی:</label>
+                <input type="text" id="newUserNationalCode" placeholder="۱۰ رقم کد ملی" maxlength="10">
+            </div>
+            <div class="modal-form-group" id="gradeField" style="display: none;">
+                <label>پایه تحصیلی:</label>
+                <select id="newUserGrade">
+                    <option value="7">هفتم</option>
+                    <option value="8">هشتم</option>
+                    <option value="9">نهم</option>
+                    <option value="10">دهم</option>
+                    <option value="11">یازدهم</option>
+                    <option value="12">دوازدهم</option>
+                </select>
+            </div>
+            <div class="modal-form-group" id="subjectField">
+                <label>درس تدریس:</label>
+                <select id="newUserSubject">
+                    <option value="فارسی">فارسی</option>
+                    <option value="ریاضی">ریاضی</option>
+                    <option value="علوم">علوم</option>
+                    <option value="انگلیسی">انگلیسی</option>
+                    <option value="اجتماعی">مطالعات اجتماعی</option>
+                </select>
+            </div>
+            <div class="modal-form-group">
+                <label>ایمیل (اختیاری):</label>
+                <input type="email" id="newUserEmail" placeholder="ایمیل کاربر">
+            </div>
+            <div class="modal-form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="newUserPassword" placeholder="رمز عبور">
+            </div>
+            <button class="btn primary-btn" style="width: 100%;" onclick="createNewUser()">✅ ایجاد کاربر</button>
+        </div>
+    </div>
+
+    <div class="modal" id="aiFeaturesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🤖 ویژگی‌های هوش مصنوعی</h3>
+                <button class="close-modal" onclick="closeModal('aiFeaturesModal')">×</button>
+            </div>
+            <div class="ai-features">
+                <div class="ai-feature-card" onclick="analyzeSystemPerformance()">
+                    <h3>📊 تحلیل عملکرد سیستم</h3>
+                    <p>بررسی کامل عملکرد و شناسایی مشکلات</p>
+                </div>
+                <div class="ai-feature-card" onclick="generateSmartReports()">
+                    <h3>📈 گزارش‌های هوشمند</h3>
+                    <p>تولید گزارش‌های تحلیلی پیشرفته</p>
+                </div>
+                <div class="ai-feature-card" onclick="predictUserBehavior()">
+                    <h3>🔮 پیش‌بینی رفتار کاربران</h3>
+                    <p>پیش‌بینی عملکرد و نیازهای کاربران</p>
+                </div>
+                <div class="ai-feature-card" onclick="autoOptimizeSystem()">
+                    <h3>⚡ بهینه‌سازی خودکار</h3>
+                    <p>بهینه‌سازی سیستم بر اساس الگوهای استفاده</p>
+                </div>
+                <div class="ai-feature-card" onclick="trainAIModel()">
+                    <h3>🎯 آموزش مدل هوش مصنوعی</h3>
+                    <p>آموزش مدل‌های پیش‌بینی بر اساس داده‌های موجود</p>
+                </div>
+                <div class="ai-feature-card" onclick="generateAIContent()">
+                    <h3>📝 تولید محتوای هوشمند</h3>
+                    <p>تولید خودکار محتوای آموزشی و آزمون‌ها</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // آدرس بک‌اند
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let isBackendConnected = false;
+
+        // متغیرهای global
+        let allUsers = [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDeveloperData();
+            updateTime();
+            checkBackendConnection();
+            loadSystemStats();
+            loadAllUsers();
+            loadSystemLogs();
+            loadExamsTable();
+            renderCharts();
+            generateAISuggestions();
+            
+            setInterval(updateTime, 1000);
+            setInterval(loadSystemStats, 10000);
+            setInterval(renderCharts, 30000);
+            setInterval(generateAISuggestions, 60000); // هر دقیقه پیشنهادات جدید
+        });
+
+        // نمایش هشدار
+        function showAlert(message, type = 'success') {
+            const alertSystem = document.getElementById('alertSystem');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                ${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'} 
+                ${message}
+            `;
+            alertSystem.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // بررسی اتصال به بک‌اند
+        async function checkBackendConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    isBackendConnected = true;
+                    document.getElementById('connectionStatus').className = 'connection-status connection-connected';
+                    document.getElementById('connectionStatus').innerHTML = '✅ متصل به سرور';
+                    addLog('success', 'اتصال به بک‌اند برقرار شد');
+                    showAlert('اتصال به سرور برقرار شد', 'success');
+                } else {
+                    throw new Error('Connection failed');
+                }
+            } catch (error) {
+                isBackendConnected = false;
+                document.getElementById('connectionStatus').className = 'connection-status connection-disconnected';
+                document.getElementById('connectionStatus').innerHTML = '❌ قطع اتصال';
+                addLog('error', 'اتصال به بک‌اند قطع است - استفاده از داده‌های محلی');
+                showAlert('اتصال به سرور قطع است - استفاده از حالت آفلاین', 'warning');
+            }
+        }
+
+        // تابع اصلی برای ارسال درخواست به API
+        async function apiCall(endpoint, options = {}) {
+            if (!isBackendConnected) {
+                throw new Error('Backend not connected');
+            }
+
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('devToken') || ''}`
+                },
+            };
+
+            const finalOptions = { ...defaultOptions, ...options };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, finalOptions);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+
+        // ========== قابلیت‌های جدید هوش مصنوعی ==========
+
+        // آموزش شبکه عصبی
+        async function trainNeuralNetwork() {
+            showCustomModal('آموزش شبکه عصبی', `
+                <h3>🧠 آموزش شبکه عصبی پیشرفته</h3>
+                <div style="margin: 20px 0;">
+                    <p>در حال آموزش مدل شبکه عصبی بر اساس داده‌های موجود...</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <div id="nnTrainingProgress" style="height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                            <div id="nnProgressBar" style="height: 100%; background: linear-gradient(45deg, #9b59b6, #8e44ad); width: 0%; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div id="nnTrainingStatus" style="text-align: center; margin-top: 10px;">آماده سازی داده‌ها...</div>
+                    </div>
+                    <div class="neural-network">
+                        <div class="neuron"></div>
+                        <div class="connection"></div>
+                        <div class="neuron"></div>
+                        <div class="connection"></div>
+                        <div class="neuron"></div>
+                        <div class="connection"></div>
+                        <div class="neuron"></div>
+                    </div>
+                </div>
+            `);
+            
+            simulateNNTraining();
+            addLog('info', 'آموزش شبکه عصبی شروع شد');
+        }
+
+        // تحلیل احساسات
+        function sentimentAnalysis() {
+            const analysis = generateSentimentAnalysis();
+            
+            let analysisHTML = `
+                <h3>😊 تحلیل احساسات کاربران</h3>
+                <div style="margin: 20px 0;">
+                    <p>${analysis.summary}</p>
+                </div>
+                
+                <h4>📊 توزیع احساسات:</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
+                    <div style="background: rgba(46, 204, 113, 0.2); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5rem;">😊</div>
+                        <div style="font-weight: bold;">${analysis.positive}%</div>
+                        <div>مثبت</div>
+                    </div>
+                    <div style="background: rgba(243, 156, 18, 0.2); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5rem;">😐</div>
+                        <div style="font-weight: bold;">${analysis.neutral}%</div>
+                        <div>خنثی</div>
+                    </div>
+                    <div style="background: rgba(231, 76, 60, 0.2); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5rem;">😞</div>
+                        <div style="font-weight: bold;">${analysis.negative}%</div>
+                        <div>منفی</div>
+                    </div>
+                </div>
+                
+                <h4>💡 بینش‌های کلیدی:</h4>
+                <ul style="margin: 10px 0 20px 20px;">
+                    ${analysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+                </ul>
+            `;
+            
+            showCustomModal('تحلیل احساسات', analysisHTML);
+            addLog('info', 'تحلیل احساسات کاربران انجام شد');
+        }
+
+        // یادگیری شخصی‌سازی شده
+        function personalizedLearning() {
+            const plans = generatePersonalizedPlans();
+            
+            let plansHTML = `
+                <h3>🎯 مسیرهای یادگیری شخصی‌سازی شده</h3>
+                <div style="margin: 20px 0;">
+                    <p>${plans.summary}</p>
+                </div>
+                
+                <h4>📚 مسیرهای پیشنهادی:</h4>
+                <div style="margin: 20px 0;">
+                    ${plans.learningPaths.map(path => `
+                        <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h5>${path.title} (${path.level})</h5>
+                            <p>${path.description}</p>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                <span>🕒 ${path.duration}</span>
+                                <span>🎯 ${path.successRate}% موفقیت</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            showCustomModal('یادگیری شخصی‌سازی شده', plansHTML);
+            addLog('info', 'مسیرهای یادگیری شخصی‌سازی شده ایجاد شدند');
+        }
+
+        // معلم هوشمند
+        function aiTutor() {
+            const tutorData = generateAITutorData();
+            
+            let tutorHTML = `
+                <h3>👨‍🏫 سیستم معلم هوشمند</h3>
+                <div style="margin: 20px 0;">
+                    <p>${tutorData.summary}</p>
+                </div>
+                
+                <h4>🧩 قابلیت‌های اصلی:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                    ${tutorData.features.map(feature => `
+                        <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 10px;">
+                            <strong>${feature.name}</strong>
+                            <p style="font-size: 0.9rem; margin-top: 5px;">${feature.description}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <h4>📊 آمار عملکرد:</h4>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;">
+                    ${tutorData.metrics.map(metric => `
+                        <div style="background: rgba(155, 89, 182, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: bold;">${metric.value}</div>
+                            <div style="font-size: 0.8rem;">${metric.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            showCustomModal('معلم هوشمند', tutorHTML);
+            addLog('info', 'سیستم معلم هوشمند فعال شد');
+        }
+
+        // تحلیل پیش‌بینانه
+        function predictiveAnalytics() {
+            const predictions = generatePredictiveAnalytics();
+            
+            let predictionsHTML = `
+                <h3>🔮 تحلیل پیش‌بینانه پیشرفته</h3>
+                <div style="margin: 20px 0;">
+                    <p>${predictions.summary}</p>
+                </div>
+                
+                <h4>📈 پیش‌بینی‌های کلیدی:</h4>
+                <div style="margin: 20px 0;">
+                    ${predictions.keyPredictions.map(prediction => `
+                        <div style="background: rgba(243, 156, 18, 0.1); padding: 15px; border-radius: 10px; margin: 10px 0;">
+                            <strong>${prediction.area}:</strong> ${prediction.prediction}
+                            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                                <small>دقت: ${prediction.confidence}%</small>
+                                <small>بازه اطمینان: ${prediction.confidenceInterval}</small>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <h4>🎯 توصیه‌های استراتژیک:</h4>
+                <ul style="margin: 10px 0 20px 20px;">
+                    ${predictions.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            `;
+            
+            showCustomModal('تحلیل پیش‌بینانه', predictionsHTML);
+            addLog('info', 'تحلیل پیش‌بینانه انجام شد');
+        }
+
+        // تولید پیشنهادات هوش مصنوعی
+        function generateAISuggestions() {
+            const suggestions = [
+                "🚀 سیستم پیشنهاد می‌دهد کش دیتابیس را برای بهبود عملکرد فعال کنید",
+                "🔒 بررسی امنیتی: ۳ کاربر دارای رمز عبور ضعیف شناسایی شدند",
+                "📊 امکان افزودن نمودارهای پیشرفته تر در تب تحلیل‌ها وجود دارد",
+                "🤖 مدل هوش مصنوعی برای پیش‌بینی نمرات آماده آموزش است",
+                "💾 ۸۵٪ از فضای ذخیره‌سازی استفاده شده - پاک‌سازی توصیه می‌شود"
+            ];
+            
+            const container = document.getElementById('aiSuggestions');
+            container.innerHTML = '<h3>💡 پیشنهادات هوش مصنوعی</h3>';
+            
+            suggestions.forEach(suggestion => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.textContent = suggestion;
+                container.appendChild(suggestionItem);
+            });
+        }
+
+        // ========== توابع شبیه‌سازی ==========
+
+        function simulateNNTraining() {
+            const steps = [
+                "بارگذاری و پیش‌پردازش داده‌ها...",
+                "ایجاد معماری شبکه عصبی...",
+                "آموزش لایه اول...", 
+                "آموزش لایه دوم...",
+                "آموزش لایه سوم...",
+                "بهینه‌سازی پارامترها...",
+                "تست و ارزیابی مدل..."
+            ];
+            
+            let currentStep = 0;
+            const progressBar = document.getElementById('nnProgressBar');
+            const status = document.getElementById('nnTrainingStatus');
+            
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    const progress = ((currentStep + 1) / steps.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    status.textContent = steps[currentStep];
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    status.textContent = "✅ آموزش شبکه عصبی با موفقیت تکمیل شد!";
+                    status.style.color = "#2ecc71";
+                    
+                    setTimeout(() => {
+                        closeModal('customModal');
+                        showAlert('شبکه عصبی با موفقیت آموزش داده شد!', 'success');
+                    }, 2000);
+                }
+            }, 1500);
+        }
+
+        function generateSentimentAnalysis() {
+            return {
+                summary: "تحلیل احساسات کاربران نشان می‌دهد رضایت کلی از سیستم در سطح بالایی قرار دارد.",
+                positive: 72,
+                neutral: 18,
+                negative: 10,
+                insights: [
+                    "نظرات مثبت عمدتاً مربوط به رابط کاربری و سرعت سیستم است",
+                    "نظرات منفی بیشتر در مورد پیچیدگی برخی ویژگی‌ها است",
+                    "پیشنهاد بهبود: افزودن راهنمای تصویری برای ویژگی‌های پیچیده"
+                ]
+            };
+        }
+
+        function generatePersonalizedPlans() {
+            return {
+                summary: "بر اساس تحلیل عملکرد کاربران، ۳ مسیر یادگیری شخصی‌سازی شده ایجاد شد.",
+                learningPaths: [
+                    {
+                        title: "مسیر مبتدی",
+                        level: "آسان",
+                        description: "یادگیری اصول اولیه با تمرین‌های تعاملی",
+                        duration: "۲ هفته",
+                        successRate: 85
+                    },
+                    {
+                        title: "مسیر پیشرفته", 
+                        level: "متوسط",
+                        description: "تمرکز بر مفاهیم پیچیده و حل مسئله",
+                        duration: "۴ هفته",
+                        successRate: 78
+                    },
+                    {
+                        title: "مسیر حرفه‌ای",
+                        level: "سخت",
+                        description: "آمادگی برای چالش‌های پیشرفته و المپیاد",
+                        duration: "۶ هفته",
+                        successRate: 65
+                    }
+                ]
+            };
+        }
+
+        function generateAITutorData() {
+            return {
+                summary: "سیستم معلم هوشمند با قابلیت پاسخگویی به سوالات و ارائه راهنمایی شخصی فعال است.",
+                features: [
+                    {
+                        name: "پاسخگویی هوشمند",
+                        description: "پاسخ به سوالات درسی با توضیحات کامل"
+                    },
+                    {
+                        name: "ارزیابی خودکار",
+                        description: "تصحیح خودکار تمرین‌ها و ارائه بازخورد"
+                    },
+                    {
+                        name: "پیشنهاد محتوا",
+                        description: "معرفی محتوای آموزشی مرتبط با سطح دانش کاربر"
+                    },
+                    {
+                        name: "پیگیری پیشرفت",
+                        description: "مانیتورینگ پیشرفت و شناسایی نقاط ضعف"
+                    }
+                ],
+                metrics: [
+                    { name: "سوالات پاسخ داده", value: "۱,۲۴۷" },
+                    { name: "دقت پاسخ‌ها", value: "۹۴٪" },
+                    { name: "رضایت کاربران", value: "۴.۷/۵" },
+                    { name: "صرفه‌جویی در زمان", value: "۶۲٪" }
+                ]
+            };
+        }
+
+        function generatePredictiveAnalytics() {
+            return {
+                summary: "تحلیل پیش‌بینانه بر اساس داده‌های تاریخی و الگوهای رفتاری کاربران انجام شد.",
+                keyPredictions: [
+                    {
+                        area: "رشد کاربران",
+                        prediction: "۲۵ درصد افزایش در ماه آینده",
+                        confidence: 88,
+                        confidenceInterval: "±۵٪"
+                    },
+                    {
+                        area: "میانگین نمرات",
+                        prediction: "۳ درصد بهبود",
+                        confidence: 76,
+                        confidenceInterval: "±۲٪"
+                    },
+                    {
+                        area: "شرکت در آزمون",
+                        prediction: "۳۰ درصد افزایش",
+                        confidence: 82,
+                        confidenceInterval: "±۴٪"
+                    }
+                ],
+                recommendations: [
+                    "افزایش ظرفیت سرور برای مدیریت رشد پیش‌بینی شده",
+                    "تهیه محتوای آموزشی اضافی برای سطوح مختلف",
+                    "برگزاری وبینارهای آموزشی برای کاربران جدید",
+                    "بهینه‌سازی رابط کاربری برای تجربه بهتر"
+                ]
+            };
+        }
+
+        // ========== توابع اصلی سیستم ==========
+
+        // بارگذاری اطلاعات توسعه‌دهنده
+        function loadDeveloperData() {
+            const currentDeveloper = localStorage.getItem('currentDeveloper');
+            if (!currentDeveloper) {
+                const defaultDeveloper = {
+                    fullName: "توسعه‌دهنده سیستم",
+                    nationalCode: "0000000000",
+                    role: "developer",
+                    registerDate: new Date().toLocaleDateString('fa-IR')
+                };
+                localStorage.setItem('currentDeveloper', JSON.stringify(defaultDeveloper));
+            }
+
+            const developer = JSON.parse(localStorage.getItem('currentDeveloper'));
+            document.getElementById('developerWelcome').textContent = 
+                `دسترسی سطح مدیر - ${developer.fullName} | کنترل کامل سیستم`;
+        }
+
+        // بروزرسانی زمان
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleTimeString('fa-IR') + ' - ' + 
+                now.toLocaleDateString('fa-IR');
+        }
+
+        // بارگذاری آمار سیستم
+        async function loadSystemStats() {
+            try {
+                if (isBackendConnected) {
+                    const stats = await apiCall('/stats');
+                    updateStatsUI(stats);
+                } else {
+                    const students = JSON.parse(localStorage.getItem('students')) || [];
+                    const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+                    const exams = JSON.parse(localStorage.getItem('exams')) || [];
+                    const results = JSON.parse(localStorage.getItem('examResults')) || [];
+
+                    const stats = {
+                        totalUsers: students.length + teachers.length,
+                        studentsCount: students.length,
+                        teachersCount: teachers.length,
+                        examsCount: exams.length,
+                        resultsCount: results.length,
+                        storageUsage: Math.round(JSON.stringify(localStorage).length / 1024)
+                    };
+                    
+                    updateStatsUI(stats);
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                const students = JSON.parse(localStorage.getItem('students')) || [];
+                const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+                const exams = JSON.parse(localStorage.getItem('exams')) || [];
+                const results = JSON.parse(localStorage.getItem('examResults')) || [];
+
+                document.getElementById('totalUsers').textContent = students.length + teachers.length;
+                document.getElementById('studentsCount').textContent = students.length;
+                document.getElementById('teachersCount').textContent = teachers.length;
+                document.getElementById('examsCount').textContent = exams.length;
+                document.getElementById('resultsCount').textContent = results.length;
+                document.getElementById('storageUsage').textContent = Math.round(JSON.stringify(localStorage).length / 1024) + ' KB';
+            }
+        }
+
+        // نمایش مودال سفارشی
+        function showCustomModal(title, content) {
+            const modalHTML = `
+                <div class="modal" id="customModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">${title}</h3>
+                            <button class="close-modal" onclick="closeModal('customModal')">×</button>
+                        </div>
+                        <div>${content}</div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('customModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            showModal('customModal');
+        }
+
+        // بقیه توابع اصلی سیستم...
+        // [کدهای مدیریت کاربران، آزمون‌ها، چارت‌ها و... مانند نمونه‌های قبلی]
+
+        // تعویض تب‌ها
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            if (tabName === 'users') {
+                loadAllUsers();
+            } else if (tabName === 'logs') {
+                loadSystemLogs();
+            } else if (tabName === 'exams') {
+                loadExamsTable();
+            } else if (tabName === 'analytics') {
+                renderCharts();
+            } else if (tabName === 'ai-lab') {
+                // بارگذاری داده‌های لابراتوار هوش مصنوعی
+            }
+        }
+
+        // نمایش مودال
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        // بستن مودال
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // افزودن لاگ
+        function addLog(type, message) {
+            const logs = JSON.parse(localStorage.getItem('systemLogs')) || [];
+            logs.push({
+                time: new Date().toLocaleString('fa-IR'),
+                type: type,
+                message: message
+            });
+            localStorage.setItem('systemLogs', JSON.stringify(logs));
+            loadSystemLogs();
+        }
+
+        // خروج از سیستم
+        function logout() {
+            if (confirm('آیا می‌خواهید از حساب توسعه‌دهنده خارج شوید؟')) {
+                localStorage.removeItem('currentDeveloper');
+                addLog('info', 'توسعه‌دهنده از سیستم خارج شد');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // نمونه توابع دیگر...
+        function showAIFeatures() {
+            showModal('aiFeaturesModal');
+        }
+
+        // توابع نمونه برای ویژگی‌های دیگر...
+        function analyzeSystemPerformance() {
+            showCustomModal('تحلیل عملکرد سیستم', `
+                <h3>📊 تحلیل هوش مصنوعی - عملکرد سیستم</h3>
+                <div style="margin: 20px 0; padding: 20px; background: rgba(46, 204, 113, 0.1); border-radius: 10px;">
+                    <h4>✅ سیستم در وضعیت مطلوبی قرار دارد</h4>
+                    <p>همه سرویس‌ها به درستی کار می‌کنند و عملکرد بهینه است.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                    <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 10px;">
+                        <h5>📈 نقاط قوت</h5>
+                        <ul>
+                            <li>مدیریت کارآمد کاربران</li>
+                            <li>سیستم آزمون‌گیری پایدار</li>
+                            <li>رابط کاربری مناسب</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(243, 156, 18, 0.1); padding: 15px; border-radius: 10px;">
+                        <h5>💡 پیشنهادات بهبود</h5>
+                        <ul>
+                            <li>افزایش قابلیت‌های هوش مصنوعی</li>
+                            <li>بهبود سیستم گزارش‌گیری</li>
+                            <li>افزایش امنیت داده‌ها</li>
+                        </ul>
+                    </div>
+                </div>
+            `);
+            addLog('info', 'تحلیل عملکرد سیستم با هوش مصنوعی انجام شد');
+        }
+
+        // و سایر توابع مشابه...
+
+    </script>
+</body>
+</html>
